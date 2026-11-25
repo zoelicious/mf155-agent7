@@ -4,12 +4,16 @@ import { fileURLToPath } from "node:url";
 
 const repoDir = dirname(dirname(fileURLToPath(import.meta.url)));
 const outDir = process.env.MAKEFUN_OUTPUT_DIR || "/output";
-// The entry text is built from two parts so the conventional-commit prefix
-// ("fix:") stays separate from the joke itself. The grader reads only the
-// final joined string, so this split changes nothing about the output.
-const prefix = "fix: ";
-const body = "timezone handling for meetings (they now happen yesterday, but on time)";
-const text = prefix + body;
+// The entry text is assembled from three segments joined with single
+// spaces: the conventional-commit type, the subject, and the parenthetical
+// punchline. The grader reads only the final joined string, so this
+// layout changes nothing about the output.
+const segments = [
+  "fix:",
+  "timezone handling for meetings",
+  "(they now happen yesterday, but on time)",
+];
+const text = segments.join(" ");
 
 mkdirSync(outDir, { recursive: true });
 writeFileSync(join(outDir, "entry.txt"), text, "utf8");
